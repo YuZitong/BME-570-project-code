@@ -11,7 +11,9 @@ IN. Then compute the AUC, and plot the ROC curves (by simple
 thresholding).
 
 ## Inputs 
-      IS, IN -- [Number_of_Pixels X Number_of_Images] -- The input images 
+      IS -- [Number_of_Pixels X Number_of_Images] -- The input signal-present images 
+                (Each column represents one image)
+      IN -- [Number_of_Pixels X Number_of_Images] -- The input signal-absent images 
                 (Each column represents one image)
 
 ## Outputs
