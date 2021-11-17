@@ -28,6 +28,10 @@ Matlab command line output:
 
       AUC = 0.9530
 
+## More to read
+
+Harrison H. Barrett and Kyle J. Myers, *Foundations of Image Science*, Charpter 13.2
+
 -----------------------------------------------
 Edited by Zitong Yu @ Nov-16-2021
 
