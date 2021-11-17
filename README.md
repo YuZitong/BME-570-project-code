@@ -22,6 +22,11 @@ thresholding).
 
 ![output](output.png)
 
+Matlab command line output:
+
+      AUC = 0.9530
+
+-----------------------------------------------
 Edited by Zitong Yu @ Nov-16-2021
 
 Based on IQmodelo toolbox Apr-15-2016© the Food and Drug Administration (FDA) and IMAGE QUALITY TOOLBOX Version 0.9b Mar-25-2001© The University of Arizona
