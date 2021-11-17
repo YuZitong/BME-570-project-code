@@ -2,7 +2,7 @@
 Matlab code to evaluate performance on a signal-detection task.
 
 ## Usage
-[AUC] = performance_evaluation(IS,IN)
+      [AUC] = performance_evaluation(IS,IN)
 
 ## Discription
 Conduct an observer study using channelized Hotelling observer.
