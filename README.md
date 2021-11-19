@@ -53,7 +53,7 @@ Contact: yu.zitong@wustl.edu
 
 ## CNN-based denoiser
 
-A simple CNN-based denoiser. Feel free to change the structure of the network. If you find any bug, please contact Zitong Yu (yu.zitong@wustl.edu). Thanks.
+A simple CNN-based denoiser. Feel free to change the structure of the network. If you find any bug or have any question, please contact Zitong Yu (yu.zitong@wustl.edu). Thanks.
 
 ### Python requirements
 This code was tested on:
@@ -65,8 +65,8 @@ No GPU requirement, since the code runs on CPUs.
 
 ### Preparing dataset
 Images should be saved as 64X64 `.npy` files.
-Use provided `writeNPY()` MATLAB function to save images as `.npy` files.
-#### Useage:
+Use provided `writeNPY()` MATLAB function to save images as `.npy` files:
+
       writeNPY(reshape(img,64,64),['image',num2str(img_ind),'.npy']);
 
 The training data should be saved as following:
@@ -236,8 +236,8 @@ Saving the predicted data...
 
 The predictions will be saved in the `$your_dataset_directory$/prediction`.
 
-Use provided `readNPY()` MATLAB function to read images in MATLAB.
-#### Useage:
+Use provided `readNPY()` MATLAB function to read images in MATLAB:
+
       img = readNPY(['image',num2str(img_ind),'.npy']);
       
 -----------------------------------------------
