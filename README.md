@@ -121,7 +121,7 @@ To train a network, run:
 
 An example:
 
-`python DL_denoiser.py --dataset-dir ./data/train/  --num-train 50 --num-epochs 20 --dim 64 --batch-size 8`
+`python DL_denoiser.py --dataset-dir ./data/train/  --num-train 400 --num-epochs 100 --dim 64 --batch-size 8`
 
 A successful training should print the following:
 
@@ -198,9 +198,9 @@ Non-trainable params: 0
 __________________________________________________________________________________________________
 Loading the training data...
 Training...
-Train on 400 samples, validate on 100 samples
+Train on 300 samples, validate on 100 samples
 Epoch 1/100
-40/40 [==============================] - 3s 78ms/step - loss: 21.6744 - val_loss: 20.1661
+38/38 [==============================] - 3s 78ms/step - loss: 21.6744 - val_loss: 20.1661
 
 <... snip ...>
 
