@@ -106,8 +106,8 @@ def train(model, dataset_dir, num_train, num_epochs, params):
 
     # Images should be saved as 64X64 .npy files. Use provided writeNPY() MATLAB function to save images as .npy files. Useage: writeNPY(reshape(img,64,64),'file_name.npy');
     for i in np.arange(num_train):
-        X[i,:,:,0] = np.load(f'{dataset_dir}/low_dose/image{i}.npy') # You can change this path to your actual path.
-        Y[i,:,:,0] = np.load(f'{dataset_dir}/normal_dose/image{i}.npy') # You can change this path to your actual path.
+        X[i,:,:,0] = np.load(f'{dataset_dir}/noisy/image{i}.npy') # You can change this path to your actual path.
+        Y[i,:,:,0] = np.load(f'{dataset_dir}/low_noise/image{i}.npy') # You can change this path to your actual path.
 
     print('Training...')
     callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
@@ -136,7 +136,7 @@ def predict(model_file, dataset_dir, num_test, params):
     print('Loading the test data...')
     X_test = np.zeros((num_test, *params['dim'], params['n_channels']))
     for i in np.arange(num_test):
-        X_test[i,:,:,0] = np.load(f'{dataset_dir}/low_dose/image{i}.npy') # You can change this path to your actual path.
+        X_test[i,:,:,0] = np.load(f'{dataset_dir}/noisy/image{i}.npy') # You can change this path to your actual path.
 
     model = load_model(model_file, custom_objects={'loss_fn': loss_fn}, compile=False)
     pred = model.predict(x=X_test,
