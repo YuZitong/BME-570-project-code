@@ -18,6 +18,10 @@ This code was tested on:
 ###############################################################################
 #                            Import Libraries
 ###############################################################################
+from pickle import load
+import sys
+import os
+import argparse
 import numpy as np
 import tensorflow as tf
 
@@ -31,6 +35,7 @@ from keras.layers.advanced_activations import LeakyReLU
 from keras.initializers import Constant
 from keras.regularizers import l2
 from keras.models import load_model
+
 
 ###############################################################################
 #                            Model
@@ -89,70 +94,103 @@ def get_cnn():
     model = Model(inputs=[input], outputs=[output])
     return model
 
-params = {'dim': (64,64), # image size
-          'batch_size': 32,
-          'n_channels': 1, # num. of channels
-          'shuffle': True}
-
-model = get_cnn()
-model.summary()
-model.compile(loss=loss_fn, optimizer='adam')
-
 ###############################################################################
 #                            	    Training
 ###############################################################################
-print('Loading the training data...')
-num_train = 5000 # num. of training images. Change this number to match the actual number of images.
-num_epochs = 500 # num. of epochs.
+def train(model, dataset_dir, num_train, num_epochs, params):
+    print('Loading the training data...')
 
-# import images here
-X = np.zeros((num_train, *params['dim'], params['n_channels'])) # input data (low dose noisy images)
-Y = np.zeros((num_train, *params['dim'], params['n_channels'])) # label (normal dose images)
+    # import images here
+    X = np.zeros((num_train, *params['dim'], params['n_channels'])) # input data (low dose noisy images)
+    Y = np.zeros((num_train, *params['dim'], params['n_channels'])) # label (normal dose images)
 
-# Images should be saved as 64X64 .npy files. Use provided writeNPY() MATLAB function to save images as .npy files.
-for i in np.arange(num_train):
-    X[i,:,:,0] = np.load(f'./data/train/low_dose/image{i}.npy') # You can change this path to your actual path.
-    Y[i,:,:,0] = np.load(f'./data/train/normal_dose/image{i}.npy') # You can change this path to your actual path.
+    # Images should be saved as 64X64 .npy files. Use provided writeNPY() MATLAB function to save images as .npy files. Useage: writeNPY(reshape(img,64,64),'file_name.npy');
+    for i in np.arange(num_train):
+        X[i,:,:,0] = np.load(f'{dataset_dir}/low_dose/image{i}.npy') # You can change this path to your actual path.
+        Y[i,:,:,0] = np.load(f'{dataset_dir}/normal_dose/image{i}.npy') # You can change this path to your actual path.
 
-print('Training...')
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
-# This callback will stop the training when there is no improvement in the validation loss for ten consecutive epochs. This callback function can prevent overfitting.
-history = model.fit(x=X,
-                    y=Y,
-                    batch_size=params['batch_size'],
-                    verbose=1,
-                    validation_split=0.2,
-                    epochs=num_epochs,
-                    shuffle=params['shuffle'],
-                    callbacks=[callback]) 
-print('Training finished.')
-train_loss = history.history['loss'] # training loss
-val_loss = history.history['val_loss'] # validation loss
+    print('Training...')
+    callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
+    # This callback will stop the training when there is no improvement in the validation loss for ten consecutive epochs. This callback function can prevent overfitting.
+    history = model.fit(x=X,
+                        y=Y,
+                        batch_size=params['batch_size'],
+                        verbose=1,
+                        validation_split=0.2,
+                        epochs=num_epochs,
+                        shuffle=params['shuffle'],
+                        callbacks=[callback]) 
+    print('Training finished.')
+    train_loss = history.history['loss'] # training loss
+    val_loss = history.history['val_loss'] # validation loss
 
-model.save(f'model_epochs{num_epochs}.h5') # save the trained model
-np.save(f'train_loss_epochs{num_epochs}.npy',train_loss) # training loss saved in npy file. Use provided readNPY() MATLAB function to read.
-np.save(f'val_loss_epochs{num_epochs}.npy',val_loss)# validation loss saved in npy file. Use provided readNPY() MATLAB function to read.
+    model.save(f'model_epochs{num_epochs}.h5') # save the trained model
+    np.save(f'train_loss_epochs{num_epochs}.npy',train_loss) # training loss saved in npy file. Use provided readNPY() MATLAB function to read.
+    np.save(f'val_loss_epochs{num_epochs}.npy',val_loss)# validation loss saved in npy file. Use provided readNPY() MATLAB function to read.
+
 
 ###############################################################################
 #                            	    Prediction
 ###############################################################################
-params = {'dim': (64,64),
-          'batch_size': 1,
-          'n_channels': 1,
+def predict(model_file, dataset_dir, num_test, params):
+    print('Loading the test data...')
+    X_test = np.zeros((num_test, *params['dim'], params['n_channels']))
+    for i in np.arange(num_test):
+        X_test[i,:,:,0] = np.load(f'{dataset_dir}/low_dose/image{i}.npy') # You can change this path to your actual path.
+
+    model = load_model(model_file, custom_objects={'loss_fn': loss_fn}, compile=False)
+    pred = model.predict(x=X_test,
+                        batch_size=params['batch_size'],
+                        verbose=1)
+
+    print('Saving the predicted data...')
+    os.mkdir(f'{dataset_dir}/prediction/')
+    for i in np.arange(num_test):
+        current_pred = pred[i]
+        np.save(f'{dataset_dir}/prediction/image{i}.npy',current_pred)
+        # To read them, use provided readNPY() MATLAB function;
+
+###############################################################################
+#                            	    Run
+###############################################################################
+def main():
+    parser = argparse.ArgumentParser(description='Train the CNN or do the perdiction.')
+
+    parser.add_argument('--dataset-dir', help='Path to dataset.')
+    parser.add_argument('--trained-model', help='Trained model.')
+    parser.add_argument('--num-train', help='Number of traing data.', type=int)
+    parser.add_argument('--num-test', help='Number of testing data.', type=int)
+    parser.add_argument('--num-epochs', help='Number of epochs.', type=int)
+    parser.add_argument('--dim', help='Image size. For example, with (64,64) image, dim = 64.', type=int)
+    parser.add_argument('--batch-size', help='Batch size.', type=int)
+
+    args = parser.parse_args()
+
+    if args.dataset_dir is None:
+        print ('Must specify validation dataset path with --dataset-dir')
+        sys.exit(1)
+    if not os.path.isdir(args.dataset_dir):
+        print ('Directory specified with --dataset-dir does not seem to exist.')
+        sys.exit(1)
+
+    params = {'dim': (args.dim,args.dim), # image size
+          'batch_size': args.batch_size,
+          'n_channels': 1, # num. of channels
           'shuffle': True}
 
-print('Loading the test data...')
-num_train = 5000 # num. of test images. Change this number to match the actual number of images.
-X_test = np.zeros((num_train, *params['dim'], params['n_channels']))
-for i in np.arange(num_train):
-    X_test[i,:,:,0] = np.load(f'./data/test/low_dose/image{i}.npy') # You can change this path to your actual path.
+    model = get_cnn()
+    model.summary()
+    model.compile(loss=loss_fn, optimizer='adam')
 
-pred = model.predict(x=X_test,
-                     batch_size=params['batch_size'],
-                     verbose=1)
+    if args.num_train is not None and args.num_test is None:
+        train(model, args.dataset_dir, args.num_train, args.num_epochs, params)
+    elif args.num_test is not None and args.num_train is None:
+        model_file = args.trained_model
+        predict(model_file, args.dataset_dir, args.num_test, params)
+    else:
+        print ('Must use either --num_train or --num_test')
+        sys.exit(1)
 
-print('Saving the predicted data...')
-for i in np.arange(num_train):
-    current_pred = pred[i]
-    np.save(f'./data/prediction/image{i}.npy',current_pred) # You can change this path to your actual path.
-
+#------------------------------------------------------------------#
+if __name__ == "__main__":
+    main()
