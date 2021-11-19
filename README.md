@@ -53,7 +53,7 @@ Contact: yu.zitong@wustl.edu
 
 ## CNN-based denoiser
 
-A simple CNN-based denoiser. You can change the structure of the network as you wish.
+A simple CNN-based denoiser. Feel free to change the structure of the network. If you find any bug, please contact Zitong Yu (yu.zitong@wustl.edu). Thanks.
 
 ### Python requirements
 This code was tested on:
