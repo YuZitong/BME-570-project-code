@@ -1,12 +1,12 @@
 # BME-570-project-code
 
-1. ./observer_evaluation/performance_evaluation.m:
+1. Matlab code to evaluate performance on a signal-detection task:
 
-   Matlab code to evaluate performance on a signal-detection task.
+   `./observer_evaluation/performance_evaluation.m`
    
-2. ./denoising/DL_denoiser.py:
+2. Python code to build a CNN for denoising:
 
-   Python code to build a CNN for denoising.
+   `./denoising/DL_denoiser.py`
 
 ## Observer Evaluation
 
@@ -15,20 +15,23 @@
 
 ### Discription
 Conduct an observer study using channelized Hotelling observer.
-The signal-present images are given by IS, the signal-absent are images given by
-IN. Then compute the AUC, and plot the ROC curves (by simple 
+The signal-present images are given by `IS`, the signal-absent are images given by
+`IN`. Then compute the AUC, and plot the ROC curves (by simple 
 thresholding).
 
 ### Inputs 
+
       IS -- [Number_of_Pixels X Number_of_Images] -- The input signal-present images 
                 (Each column represents one image)
       IN -- [Number_of_Pixels X Number_of_Images] -- The input signal-absent images 
                 (Each column represents one image)
 
 ### Outputs
+
       AUC -- Wilcoxon area under the ROC curve
       Figures -- ROC curve and delta f_hat_bar image.
       (delta f_hat_bar: the difference between signal-present and signal-absent images)
+
 ### Example of output
 
 ![output](output.png)
@@ -232,3 +235,8 @@ Saving the predicted data...
 ```
 
 The predictions will be saved in the `$your_dataset_directory$/prediction`.
+
+-----------------------------------------------
+Edited by Zitong Yu @ Nov-19-2021
+
+Contact: yu.zitong@wustl.edu
