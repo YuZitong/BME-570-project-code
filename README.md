@@ -71,11 +71,11 @@ Use provided `writeNPY()` MATLAB function to save images as `.npy` files:
 
 The training data should be saved as following:
 ```
-data_dir -- low_dose
+data_dir -- noisy
                -- image0.npy
                -- image1.npy
                -- ...
-         -- normal_dose
+         -- low_noise
                -- image0.npy
                -- image1.npy
                -- ...
@@ -83,7 +83,7 @@ data_dir -- low_dose
 
 The test data should be saved as follwoing:
 ```
-data_dir -- low_dose
+data_dir -- noisy
                -- image0.npy
                -- image1.npy
                -- ...
