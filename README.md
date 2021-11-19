@@ -1,7 +1,12 @@
 # BME-570-project-code
 
-1. ./observer_evaluation/performance_evaluation.m: Matlab code to evaluate performance on a signal-detection task.
-3. ./denoising/DL_denoiser.py: Python code to build a CNN for denoising.
+1. ./observer_evaluation/performance_evaluation.m:
+
+   Matlab code to evaluate performance on a signal-detection task.
+   
+2. ./denoising/DL_denoiser.py:
+
+   Python code to build a CNN for denoising.
 
 ## Observer Evaluation
 
@@ -42,3 +47,19 @@ Edited by Zitong Yu @ Nov-16-2021
 Based on IQmodelo toolbox Apr-15-2016© the Food and Drug Administration (FDA) and IMAGE QUALITY TOOLBOX Version 0.9b Mar-25-2001© The University of Arizona
 
 Contact: yu.zitong@wustl.edu
+
+## CNN-based denoisor
+
+### Python requirements
+This code was tested on:
+ - Python 3.6
+ - TensorFlow 1.10.0
+ - Keras 2.2.4
+
+### Preparing dataset
+Images should be saved as 64X64 `.npy` files.
+Use provided `writeNPY()` MATLAB function to save images as `.npy` files.
+#### Useage:
+      writeNPY(reshape(img,64,64),'file_name.npy');
+
+### Running
