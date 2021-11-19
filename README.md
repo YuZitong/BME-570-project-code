@@ -236,6 +236,10 @@ Saving the predicted data...
 
 The predictions will be saved in the `$your_dataset_directory$/prediction`.
 
+Use provided `readNPY()` MATLAB function to read images in MATLAB.
+#### Useage:
+      img = readNPY(['image',num2str(img_ind),'.npy']);
+      
 -----------------------------------------------
 Edited by Zitong Yu @ Nov-19-2021
 
