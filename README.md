@@ -223,7 +223,7 @@ A successful training should print the following:
 ```
 Using TensorFlow backend.
 
-<... Model structure, snap ...>
+<... Model structure, snip ...>
 
 Total params: 50,465
 Trainable params: 50,465
