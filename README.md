@@ -216,7 +216,7 @@ To test a network, run:
 
 An example:
 
-`python DL_denoiser.py --dataset-dir ./data/test/  --num-test 50  --dim 64 --batch-size 8 --trained-model ./model_epochs20.h5`
+`python DL_denoiser.py --dataset-dir ./data/test/  --num-test 50  --dim 64 --batch-size 8 --trained-model ./model_epochs100.h5`
 
 A successful training should print the following:
 
