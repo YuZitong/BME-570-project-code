@@ -44,7 +44,7 @@ from keras.models import load_model
 #  Define loss function
 def loss_fn(y_true, y_pred):
     # mean square error
-    data_fidelity = tf.reshape(y_true, shape=[-1, 64*64]) - tf.reshape(y_pred, shape=[-1, 64*64])
+    data_fidelity = tf.reshape(y_true, shape=[-1]) - tf.reshape(y_pred, shape=[-1])
     data_fidelity = tf.reduce_mean(tf.square(data_fidelity))
     return data_fidelity
 
@@ -68,11 +68,11 @@ def add_common_layers(filters, kernelsize,std, layer, bias_ct=0.03, leaky_alpha=
     return layer
 
 
-def get_cnn():
+def get_cnn(Nx):
     # This model has skip connections in place, here we use element-wise addition.
     # Define Convolutional Neural Network
     # Input shape 
-    input = Input(shape=(64,64,1))
+    input = Input(shape=(Nx,Nx,1))
     conv1 = add_common_layers(16,(3, 3),1,layer=input)
     x = add_common_layers(16,(2, 2),2,conv1)
     conv2 = add_common_layers(32,(3, 3),1, x)
@@ -104,7 +104,7 @@ def train(model, dataset_dir, num_train, num_epochs, params):
     X = np.zeros((num_train, *params['dim'], params['n_channels'])) # input data (low dose noisy images)
     Y = np.zeros((num_train, *params['dim'], params['n_channels'])) # label (normal dose images)
 
-    # Images should be saved as 64X64 .npy files. Use provided writeNPY() MATLAB function to save images as .npy files. Useage: writeNPY(reshape(img,64,64),'file_name.npy');
+    # Images should be saved as .npy files. Use provided writeNPY() MATLAB function to save images as .npy files. Useage: writeNPY(reshape(img,32,32),'file_name.npy');
     for i in np.arange(num_train):
         X[i,:,:,0] = np.load(f'{dataset_dir}/noisy/image{i}.npy') # You can change this path to your actual path.
         Y[i,:,:,0] = np.load(f'{dataset_dir}/low_noise/image{i}.npy') # You can change this path to your actual path.
@@ -161,7 +161,7 @@ def main():
     parser.add_argument('--num-train', help='Number of traing data.', type=int)
     parser.add_argument('--num-test', help='Number of testing data.', type=int)
     parser.add_argument('--num-epochs', help='Number of epochs.', type=int)
-    parser.add_argument('--dim', help='Image size. For example, with (64,64) image, dim = 64.', type=int)
+    parser.add_argument('--dim', help='Image size. For example, if (64,64) image, dim = 64.', type=int)
     parser.add_argument('--batch-size', help='Batch size.', type=int)
 
     args = parser.parse_args()
@@ -178,7 +178,7 @@ def main():
           'n_channels': 1, # num. of channels
           'shuffle': True}
 
-    model = get_cnn()
+    model = get_cnn(params['dim'][0])
     model.summary()
     model.compile(loss=loss_fn, optimizer='adam')
 
