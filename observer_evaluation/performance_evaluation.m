@@ -21,9 +21,9 @@ function [AUC] = performance_evaluation(IS,IN)
 % Contact: yu.zitong@wustl.edu
 
 %% prepare rotational sysmmetric frequency channels
-assert(prod(size(IS)==size(IN)), 'The size of IS and IN should be same.')
+assert(size(IS,1)==size(IN,1), 'The size of IS and IN should be same.')
 Nx = size(IS,1).^0.5;
-assert(Nx == 64, 'The input image should have 64X64 pixels.')
+% assert(Nx == 64, 'The input image should have 64X64 pixels.')
 Ny = Nx;
 dx = 0.44; % assume pixel size is 0.44 cm
 dy = dx; % y pixel size
@@ -107,7 +107,7 @@ xlabel('False positive ratio');
 ylabel('True positive ratio');
 
 subplot(1,2,2);
-imagesc(reshape(mean(IS - IN, 2), 64, 64));colormap gray;title('$$\Delta\overline{\hat{f}}$$','interpreter','latex');
+imagesc(reshape(mean(IS - IN, 2), Nx, Ny));colormap gray;title('$$\Delta\overline{\hat{f}}$$','interpreter','latex');
 f.Position = [100,100,1400,550];
 set(findall(gcf,'-property','FontSize'),'FontSize',18)
 end
