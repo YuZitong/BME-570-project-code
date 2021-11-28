@@ -64,10 +64,10 @@ This code was tested on:
 No GPU requirement, since the code runs on CPUs.
 
 ### Preparing dataset
-Images should be saved as 64X64 `.npy` files.
+Images should be saved as 2-D `.npy` files.
 Use provided `writeNPY()` MATLAB function to save images as `.npy` files:
 
-      writeNPY(reshape(img,64,64),['image',num2str(img_ind),'.npy']);
+      writeNPY(reshape(img,32,32),['image',num2str(img_ind),'.npy']);
 
 The training data should be saved as following:
 ```
@@ -110,7 +110,7 @@ optional arguments:
   --num-test NUM_TEST   Number of testing data.
   --num-epochs NUM_EPOCHS
                         Number of epochs.
-  --dim DIM             Image size. For example, with (64,64) image, dim = 64.
+  --dim DIM             Image size. For example, if (32,32) image, dim = 32.
   --batch-size BATCH_SIZE
                         Batch size.
 ```
@@ -121,7 +121,7 @@ To train a network, run:
 
 An example:
 
-`python DL_denoiser.py --dataset-dir ./data/train/  --num-train 400 --num-epochs 100 --dim 64 --batch-size 8`
+`python DL_denoiser.py --dataset-dir ./data/train/  --num-train 400 --num-epochs 100 --dim 32 --batch-size 8`
 
 A successful training should print the following:
 
@@ -216,7 +216,7 @@ To test a network, run:
 
 An example:
 
-`python DL_denoiser.py --dataset-dir ./data/test/  --num-test 50  --dim 64 --batch-size 8 --trained-model ./model_epochs100.h5`
+`python DL_denoiser.py --dataset-dir ./data/test/  --num-test 50  --dim 32 --batch-size 8 --trained-model ./model_epochs100.h5`
 
 A successful training should print the following:
 
