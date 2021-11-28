@@ -123,7 +123,7 @@ An example:
 
 `python DL_denoiser.py --dataset-dir ./data/train/  --num-train 400 --num-epochs 100 --dim 32 --batch-size 8`
 
-A successful training should print the following:
+A successful training should print the following (64X64 images):
 
 ```
 Using TensorFlow backend.
